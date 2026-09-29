@@ -1,0 +1,7 @@
+{
+  "target_total": 60000,
+  "per_class_per_aoi_year": 2500,
+  "normalization_budgets": [
+    60000
+  ]
+}

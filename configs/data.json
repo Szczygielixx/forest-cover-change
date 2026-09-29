@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "dataset_id": "landsat8_jun_sep_v2_r2",
+  "years": [
+    2015,
+    2020,
+    2025
+  ],
+  "season": {
+    "start": "06-01",
+    "end": "09-30"
+  },
+  "regions": {
+    "RO": {
+      "name": "Rejon Ariquemes–Jaru, Rondônia",
+      "center_lonlat": [
+        -62.65,
+        -10.3
+      ],
+      "crs": "EPSG:32720"
+    },
+    "PA": {
+      "name": "Rejon Novo Progresso, południowe Pará",
+      "center_lonlat": [
+        -55.25,
+        -7.65
+      ],
+      "crs": "EPSG:32721"
+    }
+  },
+  "candidate_grid": {
+    "rows": 4,
+    "cols": 4,
+    "step_pixels": 1000,
+    "aoi_pixels": 666,
+    "resolution_m": 30
+  },
+  "selection": {
+    "seed": 42,
+    "baseline_year": 2015,
+    "min_known_label_fraction": 0.99,
+    "forest_fraction_range": [
+      0.05,
+      0.95
+    ],
+    "min_qa_three_day_fraction_each_year": 0.95,
+    "min_boundary_distance_m": 5000,
+    "rule": "Among eligible candidates in each region, sort by baseline forest fraction, split into three equal-sized rank strata, choose two per stratum without replacement; one per stratum for train and three held-out candidates randomly assigned one validation and two test. Fixed seed. Quality gate uses all three years, never model scores."
+  },
+  "hls": {
+    "short_name": "HLSL30",
+    "version": "2.0",
+    "platform": "LANDSAT-8",
+    "bands": [
+      "B02",
+      "B03",
+      "B04",
+      "B05",
+      "B06",
+      "B07"
+    ],
+    "qa": "Fmask"
+  },
+  "preprocessing": {
+    "reject_fmask_bits": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "reject_aerosol_levels": [
+      3
+    ],
+    "retain_water": true,
+    "quality_fill": 255,
+    "reflectance_fill": -9999,
+    "reflectance_saturation": 12000,
+    "reflectance_scale": 0.0001,
+    "reflectance_offset": 0.0,
+    "min_valid_days": 3,
+    "same_day": "first_complete_valid_vector_in_lexicographic_granule_order",
+    "composite": "per_band_median_then_indices",
+    "index_denominator_epsilon": 1e-06,
+    "reject_indices_outside_minus1_plus1": true,
+    "feature_order": [
+      "blue",
+      "green",
+      "red",
+      "nir",
+      "swir1",
+      "swir2",
+      "NDVI",
+      "NDMI",
+      "NBR"
+    ],
+    "context_pixels": 32,
+    "sources": [
+      "https://lpdaac.usgs.gov/documents/1698/HLS_User_Guide_V2.pdf",
+      "https://hls.gsfc.nasa.gov/products-description/l30/"
+    ]
+  },
+  "labels": {
+    "product": "MapBiomas Brasil Collection 11",
+    "url_template": "https://storage.googleapis.com/mapbiomas-public/initiatives/brasil/collection11/lulc/coverage/brazil_coverage/brazil_coverage-col11_{year}.tif",
+    "legend": "configs/legend.csv",
+    "forest_codes": [
+      3,
+      5,
+      6,
+      49
+    ],
+    "unknown_codes": [
+      0,
+      27,
+      255
+    ],
+    "nodata": 255,
+    "seed": 42
+  },
+  "test_not_used_for_training_or_tuning": true
+}

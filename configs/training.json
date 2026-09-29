@@ -1,0 +1,106 @@
+{
+  "campaign_id": "full_v2_20260916",
+  "dataset_id": "landsat8_jun_sep_v2_r2",
+  "training_label_budget": 60000,
+  "methods": {
+    "ndvi_threshold": {
+      "start": -0.2,
+      "stop": 0.9,
+      "step": 0.01,
+      "final_variants": 1
+    },
+    "random_forest": {
+      "backend": "sklearn",
+      "n_estimators": 300,
+      "max_features": "sqrt",
+      "max_depth": [
+        20,
+        null
+      ],
+      "min_samples_leaf": [
+        1,
+        5
+      ],
+      "final_seeds": [
+        42,
+        123,
+        2026
+      ]
+    },
+    "svm_rbf": {
+      "kernel": "rbf",
+      "C": [
+        1,
+        10,
+        100
+      ],
+      "gamma": [
+        0.01,
+        0.1
+      ],
+      "probability": false,
+      "tol": 0.001,
+      "cache_size_mib": 4096,
+      "scaler_fit": "selected_training_samples_only",
+      "final_variants": 1,
+      "require_converged_fit": true,
+      "backend": "cuml"
+    },
+    "unet": {
+      "backend": "pytorch_cuda",
+      "input_channels": 9,
+      "widths": [
+        32,
+        64,
+        128,
+        256
+      ],
+      "convs_per_level": 2,
+      "conv_kernel": 3,
+      "upsample": "bilinear_with_skip_connections",
+      "pretrained_weights": false,
+      "input_patch": 128,
+      "supervised_core": 64,
+      "batch_size": 16,
+      "learning_rate": [
+        0.001,
+        0.0003
+      ],
+      "optimizer": "AdamW",
+      "weight_decay": 0.0001,
+      "max_epochs": 50,
+      "validate_every_epochs": 2,
+      "early_stopping_validation_checks": 5,
+      "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+      "normalization_fit": "same_selected_training_samples_as_SVM",
+      "threshold": 0.5,
+      "augmentation": [
+        "flips",
+        "rot90_joint_image_label_mask"
+      ],
+      "final_seeds": [
+        42,
+        123,
+        2026
+      ],
+      "checkpoint": "best_mean_validation_forest_loss_f1"
+    }
+  },
+  "selection": {
+    "metric": "mean_over_validation_areas_change_loss_f1",
+    "reference": "MapBiomas Collection 11",
+    "evaluation_pixels": "all_pairwise_valid_2015_2020_validation_pixels",
+    "tuning_seed": 42,
+    "tie_tolerance": 1e-06,
+    "tie_policy": "first_declared_candidate_earlier_epoch",
+    "use_test_labels": false,
+    "refit_on_train_plus_validation": false,
+    "use_2025_for_fit_normalization_or_tuning": false
+  },
+  "expected": {
+    "ML_fits": 19,
+    "final_variants": 8,
+    "test_state_maps": 96,
+    "test_change_maps": 64
+  }
+}

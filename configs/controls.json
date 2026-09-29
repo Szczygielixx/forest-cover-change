@@ -1,0 +1,910 @@
+{
+  "campaign_id": "training_controls_20260916",
+  "scope": "exploratory_validation_only",
+  "normalization": {
+    "mean": [
+      0.02862900428174374,
+      0.052349412043454745,
+      0.04818883713415514,
+      0.2982022108772925,
+      0.19725554920022234,
+      0.09528810428093809,
+      0.7286363191702583,
+      0.22798563868469732,
+      0.5369049048123117
+    ],
+    "std": [
+      0.014537103428607815,
+      0.021044387297046795,
+      0.03448900786070749,
+      0.04142461035600523,
+      0.08064710457698064,
+      0.05647802648355703,
+      0.17811572728678404,
+      0.19758432257632969,
+      0.2153728897510186
+    ],
+    "fit_budget": 60000,
+    "policy": "fixed original 60k train normalization for all controlled comparisons"
+  },
+  "validation_areas": [
+    "PA_V01",
+    "RO_V01"
+  ],
+  "fits": [
+    {
+      "variant": "rf_60000_baseline_s42",
+      "method": "rf",
+      "budget": 60000,
+      "regime": "baseline",
+      "seed": 42,
+      "params": {
+        "max_depth": 20,
+        "min_samples_leaf": 5
+      },
+      "unet_config": null
+    },
+    {
+      "variant": "rf_60000_baseline_s123",
+      "method": "rf",
+      "budget": 60000,
+      "regime": "baseline",
+      "seed": 123,
+      "params": {
+        "max_depth": 20,
+        "min_samples_leaf": 5
+      },
+      "unet_config": null
+    },
+    {
+      "variant": "rf_60000_baseline_s2026",
+      "method": "rf",
+      "budget": 60000,
+      "regime": "baseline",
+      "seed": 2026,
+      "params": {
+        "max_depth": 20,
+        "min_samples_leaf": 5
+      },
+      "unet_config": null
+    },
+    {
+      "variant": "svm_60000_baseline_s42",
+      "method": "svm",
+      "budget": 60000,
+      "regime": "baseline",
+      "seed": 42,
+      "params": {
+        "C": 10,
+        "gamma": 0.01
+      },
+      "unet_config": null
+    },
+    {
+      "variant": "unet_60000_baseline_s42",
+      "method": "unet",
+      "budget": 60000,
+      "regime": "baseline",
+      "seed": 42,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 50,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 5,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06
+      }
+    },
+    {
+      "variant": "unet_60000_baseline_s123",
+      "method": "unet",
+      "budget": 60000,
+      "regime": "baseline",
+      "seed": 123,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 50,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 5,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06
+      }
+    },
+    {
+      "variant": "unet_60000_baseline_s2026",
+      "method": "unet",
+      "budget": 60000,
+      "regime": "baseline",
+      "seed": 2026,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 50,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 5,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06
+      }
+    },
+    {
+      "variant": "rf_120000_baseline_s42",
+      "method": "rf",
+      "budget": 120000,
+      "regime": "baseline",
+      "seed": 42,
+      "params": {
+        "max_depth": 20,
+        "min_samples_leaf": 5
+      },
+      "unet_config": null
+    },
+    {
+      "variant": "rf_120000_baseline_s123",
+      "method": "rf",
+      "budget": 120000,
+      "regime": "baseline",
+      "seed": 123,
+      "params": {
+        "max_depth": 20,
+        "min_samples_leaf": 5
+      },
+      "unet_config": null
+    },
+    {
+      "variant": "rf_120000_baseline_s2026",
+      "method": "rf",
+      "budget": 120000,
+      "regime": "baseline",
+      "seed": 2026,
+      "params": {
+        "max_depth": 20,
+        "min_samples_leaf": 5
+      },
+      "unet_config": null
+    },
+    {
+      "variant": "svm_120000_baseline_s42",
+      "method": "svm",
+      "budget": 120000,
+      "regime": "baseline",
+      "seed": 42,
+      "params": {
+        "C": 10,
+        "gamma": 0.01
+      },
+      "unet_config": null
+    },
+    {
+      "variant": "unet_120000_baseline_s42",
+      "method": "unet",
+      "budget": 120000,
+      "regime": "baseline",
+      "seed": 42,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 50,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 5,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06
+      }
+    },
+    {
+      "variant": "unet_120000_baseline_s123",
+      "method": "unet",
+      "budget": 120000,
+      "regime": "baseline",
+      "seed": 123,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 50,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 5,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06
+      }
+    },
+    {
+      "variant": "unet_120000_baseline_s2026",
+      "method": "unet",
+      "budget": 120000,
+      "regime": "baseline",
+      "seed": 2026,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 50,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 5,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06
+      }
+    },
+    {
+      "variant": "rf_240000_baseline_s42",
+      "method": "rf",
+      "budget": 240000,
+      "regime": "baseline",
+      "seed": 42,
+      "params": {
+        "max_depth": 20,
+        "min_samples_leaf": 5
+      },
+      "unet_config": null
+    },
+    {
+      "variant": "rf_240000_baseline_s123",
+      "method": "rf",
+      "budget": 240000,
+      "regime": "baseline",
+      "seed": 123,
+      "params": {
+        "max_depth": 20,
+        "min_samples_leaf": 5
+      },
+      "unet_config": null
+    },
+    {
+      "variant": "rf_240000_baseline_s2026",
+      "method": "rf",
+      "budget": 240000,
+      "regime": "baseline",
+      "seed": 2026,
+      "params": {
+        "max_depth": 20,
+        "min_samples_leaf": 5
+      },
+      "unet_config": null
+    },
+    {
+      "variant": "svm_240000_baseline_s42",
+      "method": "svm",
+      "budget": 240000,
+      "regime": "baseline",
+      "seed": 42,
+      "params": {
+        "C": 10,
+        "gamma": 0.01
+      },
+      "unet_config": null
+    },
+    {
+      "variant": "unet_240000_baseline_s42",
+      "method": "unet",
+      "budget": 240000,
+      "regime": "baseline",
+      "seed": 42,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 50,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 5,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06
+      }
+    },
+    {
+      "variant": "unet_240000_baseline_s123",
+      "method": "unet",
+      "budget": 240000,
+      "regime": "baseline",
+      "seed": 123,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 50,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 5,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06
+      }
+    },
+    {
+      "variant": "unet_240000_baseline_s2026",
+      "method": "unet",
+      "budget": 240000,
+      "regime": "baseline",
+      "seed": 2026,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 50,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 5,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06
+      }
+    },
+    {
+      "variant": "unet_60000_long_constant_s42",
+      "method": "unet",
+      "budget": 60000,
+      "regime": "long_constant",
+      "seed": 42,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 100,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 1000,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06
+      }
+    },
+    {
+      "variant": "unet_60000_long_constant_s123",
+      "method": "unet",
+      "budget": 60000,
+      "regime": "long_constant",
+      "seed": 123,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 100,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 1000,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06
+      }
+    },
+    {
+      "variant": "unet_60000_long_constant_s2026",
+      "method": "unet",
+      "budget": 60000,
+      "regime": "long_constant",
+      "seed": 2026,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 100,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 1000,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06
+      }
+    },
+    {
+      "variant": "unet_60000_long_plateau_s42",
+      "method": "unet",
+      "budget": 60000,
+      "regime": "long_plateau",
+      "seed": 42,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 100,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 1000,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06,
+        "scheduler": {
+          "mode": "max",
+          "factor": 0.3,
+          "patience": 3,
+          "threshold": 1e-06,
+          "threshold_mode": "abs",
+          "min_lr": 1e-05
+        }
+      }
+    },
+    {
+      "variant": "unet_60000_long_plateau_s123",
+      "method": "unet",
+      "budget": 60000,
+      "regime": "long_plateau",
+      "seed": 123,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 100,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 1000,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06,
+        "scheduler": {
+          "mode": "max",
+          "factor": 0.3,
+          "patience": 3,
+          "threshold": 1e-06,
+          "threshold_mode": "abs",
+          "min_lr": 1e-05
+        }
+      }
+    },
+    {
+      "variant": "unet_60000_long_plateau_s2026",
+      "method": "unet",
+      "budget": 60000,
+      "regime": "long_plateau",
+      "seed": 2026,
+      "params": {
+        "learning_rate": 0.001
+      },
+      "unet_config": {
+        "backend": "pytorch_cuda",
+        "input_channels": 9,
+        "widths": [
+          32,
+          64,
+          128,
+          256
+        ],
+        "convs_per_level": 2,
+        "conv_kernel": 3,
+        "upsample": "bilinear_with_skip_connections",
+        "pretrained_weights": false,
+        "input_patch": 128,
+        "supervised_core": 64,
+        "batch_size": 16,
+        "learning_rate": 0.001,
+        "optimizer": "AdamW",
+        "weight_decay": 0.0001,
+        "max_epochs": 100,
+        "validate_every_epochs": 2,
+        "early_stopping_validation_checks": 1000,
+        "loss": "BCE_only_on_shared_unique_supervised_pixels_in_owned_core",
+        "normalization_fit": "same_selected_training_samples_as_SVM",
+        "threshold": 0.5,
+        "augmentation": [
+          "flips",
+          "rot90_joint_image_label_mask"
+        ],
+        "final_seeds": [
+          42,
+          123,
+          2026
+        ],
+        "checkpoint": "best_mean_validation_forest_loss_f1",
+        "tie_tolerance": 1e-06,
+        "scheduler": {
+          "mode": "max",
+          "factor": 0.3,
+          "patience": 3,
+          "threshold": 1e-06,
+          "threshold_mode": "abs",
+          "min_lr": 1e-05
+        }
+      }
+    }
+  ],
+  "expected_fits": 27
+}
